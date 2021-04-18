@@ -1,0 +1,8 @@
+DbUrl = 'mongodb://localhost:27017'
+DbName = 'DefaultDB'
+DefaultClient = 'VAVA'
+Filetypes = [
+    '.ts',
+    '.mpg',
+]
+MinAge = 0
