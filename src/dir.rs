@@ -12,15 +12,15 @@ use std::{
 
 pub struct DirectoryTraverser<'yingking> {
     cfg: &'yingking Config,
-    logger: &'yingking Logger
+    logger: &'yingking mut Logger
 }
 
 impl<'yingking> DirectoryTraverser<'yingking> {
-    pub fn new(cfg: &'yingking Config, logger: &'yingking Logger) -> DirectoryTraverser<'yingking> {
+    pub fn new(cfg: &'yingking Config, logger: &'yingking mut Logger) -> DirectoryTraverser<'yingking> {
         DirectoryTraverser { cfg, logger }
     }
 
-    pub fn traverse(&self, dir: &str) -> Result<(), Box<dyn Error>> {
+    pub fn traverse(&mut self, dir: &str) -> Result<(), Box<dyn Error>> {
         for entry in fs::read_dir(Path::new(dir))? {
             let file = entry?;
             if !file.file_type()?.is_file() {
@@ -42,7 +42,7 @@ impl<'yingking> DirectoryTraverser<'yingking> {
                 } else {
                   let file_stem = path.file_stem().and_then(|osstr| osstr.to_str()).unwrap_or("").to_owned();
                   file_stem.push_str(".txt");
-                  let (name, subtitle) = get_file_titles(&file_stem)?;
+                  let (name, subtitle) = get_file_titles(&file_stem, self.logger)?;
                 }
             }
         }
