@@ -175,7 +175,7 @@ dependencies = [
 
 [[package]]
 name = "avior_infuser_lib"
-version = "2.1.0"
+version = "3.0.0"
 dependencies = [
  "bson",
  "chrono",

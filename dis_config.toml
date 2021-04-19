@@ -1,8 +1,8 @@
-DbUrl = 'mongodb://localhost:27017'
-DbName = 'DefaultDB'
+DbName = 'Avior_test'
+DbUrl = 'mongodb://10.10.10.96:27017'
 DefaultClient = 'VAVA'
 Filetypes = [
-    '.ts',
-    '.mpg',
+  '.ts',
+  '.mpg',
 ]
 MinAge = 0
