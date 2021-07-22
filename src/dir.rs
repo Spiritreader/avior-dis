@@ -2,7 +2,7 @@ use avior_infuser_lib::log::Log;
 use avior_infuser_lib::Job;
 use avior_infuser_lib::{log::Logger, AssignedClient};
 
-use crate::{cfg::Config};
+use crate::cfg::Config;
 
 use std::convert::TryFrom;
 use std::time::SystemTime;
@@ -49,11 +49,6 @@ impl<'yingking> DirectoryTraverser<'yingking> {
 
                 let mut ignored_filetypes_iter = self.cfg.ignored_filetypes.iter();
 
-                // filter out ignored files
-                if ignored_filetypes_iter.any(|suffix| filename.ends_with(suffix)) {
-                    continue;
-                }
-
                 let path_to_str = match path.to_str() {
                     Some(path_str) => path_str,
                     None => {
@@ -62,16 +57,31 @@ impl<'yingking> DirectoryTraverser<'yingking> {
                     }
                 };
 
+                // filter out files if they have an ignored sibling file
+                if ignored_filetypes_iter.any(|suffix| {
+                    let mut check_path_str = path_to_str.clone().to_string();
+                    check_path_str.push_str(".");
+                    check_path_str.push_str(suffix);
+                    Path::new(&check_path_str).exists()
+                }) {
+                    println!("skipping {} because file was ignored by user", path_to_str);
+                    continue;
+                }
+
                 // filter out files that are too new
                 if let Ok(metadata) = file.metadata() {
                     let last_modified = metadata.modified()?;
                     let duration = match SystemTime::now().duration_since(last_modified) {
                         Ok(duration) => duration,
-                        Err(_) => continue
+                        Err(_) => continue,
                     };
-                    let days_duration = i32::try_from(duration.as_secs() / (60 * 60 * 24)).unwrap_or(0);
+                    let days_duration =
+                        i32::try_from(duration.as_secs() / (60 * 60 * 24)).unwrap_or(0);
                     if days_duration < self.cfg.min_age {
-                        println!("skipping {} due to ({} age / {} mininum)", path_to_str, days_duration, self.cfg.min_age);
+                        println!(
+                            "skipping {} due to ({} age / {} mininum)",
+                            path_to_str, days_duration, self.cfg.min_age
+                        );
                         continue;
                     }
                 }

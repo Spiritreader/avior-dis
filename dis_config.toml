@@ -6,4 +6,7 @@ Filetypes = [
   'mpg',
   'mkv'
 ]
+IgnoredFiletypes = [
+  'INFO.log'
+]
 MinAge = 30
