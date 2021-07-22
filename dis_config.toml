@@ -1,8 +1,9 @@
-DbName = 'Avior_test'
+DbName = 'Avior'
 DbUrl = 'mongodb://10.10.10.96:27017'
 DefaultClient = 'VAVA'
 Filetypes = [
-  '.ts',
-  '.mpg',
+  'ts',
+  'mpg',
+  'mkv'
 ]
-MinAge = 0
+MinAge = 30
