@@ -1,5 +1,10 @@
 use core::panic;
-use std::{collections::{BTreeMap, HashMap}, env, error::Error, fmt::Display};
+use std::{
+    collections::{BTreeMap, HashMap},
+    env,
+    error::Error,
+    fmt::Display,
+};
 mod cfg;
 mod dir;
 use avior_infuser_lib::MongoClient;
@@ -80,12 +85,12 @@ fn main() -> Result<(), Box<dyn Error>> {
     let default_client = client_vec
         .iter()
         .find(|client| client.name == cfg.default_client)
-        .expect("mate, the default client has to exist...").to_owned();
+        .expect("mate, the default client has to exist...")
+        .to_owned();
     let mut grouped_clients: BTreeMap<i32, HashMap<Client, Option<i32>>> = group_clients(
         client_vec,
         db::get_machine_jobcount(&db_client, &cfg.db_name)?,
     );
-
 
     let mut dir_trav: DirectoryTraverser = DirectoryTraverser::new(&cfg, &mut logger);
 
@@ -125,25 +130,25 @@ fn push_all_parsed(
                         "error {:?} while trying to find job {}",
                         err, &parsed_job.path
                     ));
-                    return false
+                    return false;
                 }
             };
         })
         .collect();
     if insert_jobs.len() == 0 {
-        logger.add(&format!{"database already up to date"})
+        logger.add(&format! {"database already up to date"})
     }
+    let grouped_clients_reload = grouped_clients.clone();
     for job in insert_jobs.iter_mut() {
-        let grouped_clients_reload = grouped_clients.clone();
         let eligible = get_eligible_client(&grouped_clients_reload);
-        let push_result  = match eligible {
+        let push_result = match eligible {
             // push to eligible if available
             Ok((client, current, max)) => {
                 logger.add(&format!(
                     "pushing {} to {} with {}/{} job(s) and priority {}",
                     job.path, client.name, current, max, client.priority
                 ));
-                push_and_increment(&db_client, db_name, job, &client, grouped_clients)
+                push_and_increment(&db_client, db_name, job, client, grouped_clients)
             }
             // push to default instead if no client is eligible
             Err(_) => {
@@ -151,13 +156,7 @@ fn push_all_parsed(
                     "no eligible found, pushing {} to default client {}",
                     job.path, default_client.name
                 ));
-                push_and_increment(
-                    &db_client,
-                    db_name,
-                    job,
-                    &default_client,
-                    grouped_clients,
-                )
+                push_and_increment(&db_client, db_name, job, default_client, grouped_clients)
             }
         };
         // if a db push fails, log it and retry with the next job.
@@ -203,7 +202,7 @@ param2: 3
 
 => library
 
-    
+
     let j1 = Job {
         id: None,
         path: "\\\\vdr-u\\SDuRec\\Recording\\exists\\Geheimnisvolle Wildblumen_2021-04-10-14-58-01-arte HD (AC3,deu).ts".to_string(),
@@ -231,16 +230,14 @@ param2: 3
 
 */
 
-
-
 #[cfg(test)]
 mod tests {
-    use std::error::Error;
     use crate::cfg;
     use crate::dir::DirectoryTraverser;
     use avior_infuser_lib::log::*;
+    use std::error::Error;
 
-    static IDENTITY: &str = "avior dis, version 0.1.0 - tarantula";
+    static IDENTITY: &str = "avior dis, version 0.1.1 - tarantula";
     static CFG_STRING: &str = "dis_config.toml";
     static LOG_PATH: &str = "avior_traverse_test.log";
 

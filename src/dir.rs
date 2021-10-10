@@ -42,11 +42,6 @@ impl<'yingking> DirectoryTraverser<'yingking> {
             // only iterate over files that have the specified file extension
             let mut filetypes_iterator = self.cfg.filetypes.iter();
             if filetypes_iterator.any(|filetype| filetype == &extension.to_lowercase()) {
-                let filename = path
-                    .file_name()
-                    .and_then(|osstr| osstr.to_str())
-                    .unwrap_or("");
-
                 let mut ignored_filetypes_iter = self.cfg.ignored_filetypes.iter();
 
                 let path_to_str = match path.to_str() {
