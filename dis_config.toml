@@ -1,6 +1,6 @@
 DbName = 'Avior'
 DbUrl = 'mongodb://10.10.10.96:27017'
-DefaultClient = 'VAVA'
+DefaultClient = 'VDR-U'
 Filetypes = [
   'ts',
   'mpg',
@@ -9,4 +9,4 @@ Filetypes = [
 IgnoredFiletypes = [
   'INFO.log'
 ]
-MinAge = 30
+MinAge = 1

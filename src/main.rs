@@ -138,8 +138,8 @@ fn push_all_parsed(
     if insert_jobs.len() == 0 {
         logger.add(&format! {"database already up to date"})
     }
-    let grouped_clients_reload = grouped_clients.clone();
     for job in insert_jobs.iter_mut() {
+        let grouped_clients_reload = grouped_clients.clone();
         let eligible = get_eligible_client(&grouped_clients_reload);
         let push_result = match eligible {
             // push to eligible if available
