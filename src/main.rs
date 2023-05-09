@@ -14,7 +14,7 @@ use log::{Log, Logger};
 use crate::dir::DirectoryTraverser;
 static CFG_STRING: &str = "dis_config.toml";
 static LOG_PATH: &str = "avior_dis.log";
-const IDENTITY: &str = "avior dis, version 0.1.0 - tarantula";
+const IDENTITY: &str = "avior dis, version 0.1.1 - dot";
 
 trait LogExt {
     fn log_and_flush(self, logger: &mut Logger) -> Self;
