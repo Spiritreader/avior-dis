@@ -1,5 +1,5 @@
 DbName = 'Avior'
-DbUrl = 'mongodb://10.10.10.96:27017'
+DbUrl = 'mongodb://192.168.178.75:27017'
 DefaultClient = 'VDR-U'
 Filetypes = [
   'ts',

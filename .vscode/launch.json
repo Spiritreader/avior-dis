@@ -15,7 +15,7 @@
             "console": "integratedTerminal",
             "symbolSearchPath": "https://msdl.microsoft.com/download/symbols",
             "preLaunchTask": "${defaultBuildTask}",
-            "args": ["\\\\ums.local\\recording_pool\\recording"]
+            "args": ["\\\\UMS\\Recording_pool\\Re_encode"]
         }
     ]
 }

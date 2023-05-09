@@ -44,8 +44,8 @@ impl Default for Config {
             db_url: "mongodb://localhost:27017".to_string(),
             db_name: "DefaultDB".to_string(),
             default_client: gethostname().into_string().unwrap(),
-            filetypes: vec![".ts".into(), ".mpg".into()],
-            ignored_filetypes: vec![".INFO.log".into()],
+            filetypes: vec!["ts".into(), "mpg".into()],
+            ignored_filetypes: vec!["INFO.log".into()],
             min_age: 0,
         }
     }
