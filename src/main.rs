@@ -87,6 +87,9 @@ fn main() -> Result<(), Box<dyn Error>> {
         .find(|client| client.name == cfg.default_client)
         .expect("mate, the default client has to exist...")
         .to_owned();
+    let ignored_clients: Vec<Client> = client_vec
+        .iter()
+        .filter(|client| cfg.ignored_clients.iter().any(|name| name == &client.name)).map(|client| client.to_owned()).collect();
     let mut grouped_clients: BTreeMap<i32, HashMap<Client, Option<i32>>> = group_clients(
         client_vec,
         db::get_machine_jobcount(&db_client, &cfg.db_name)?,
@@ -101,6 +104,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         &db_client,
         &cfg.db_name,
         &default_client,
+        &ignored_clients,
         &mut grouped_clients,
         &mut logger,
     );
@@ -114,6 +118,7 @@ fn push_all_parsed(
     db_client: &MongoClient,
     db_name: &String,
     default_client: &Client,
+    ignored_clients: &Vec<Client>,
     grouped_clients: &mut BTreeMap<i32, HashMap<Client, Option<i32>>>,
     logger: &mut Logger,
 ) -> Result<(), Box<dyn Error>> {
@@ -140,7 +145,7 @@ fn push_all_parsed(
     }
     for job in insert_jobs.iter_mut() {
         let grouped_clients_reload = grouped_clients.clone();
-        let eligible = get_eligible_client(&grouped_clients_reload);
+        let eligible = get_eligible_client(&grouped_clients_reload, &ignored_clients);
         let push_result = match eligible {
             // push to eligible if available
             Ok((client, current, max)) => {

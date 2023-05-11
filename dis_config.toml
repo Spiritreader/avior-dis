@@ -1,6 +1,7 @@
 DbName = 'Avior'
 DbUrl = 'mongodb://192.168.178.75:27017'
 DefaultClient = 'VDR-U'
+IgnoredClients = []
 Filetypes = [
   'ts',
   'mpg',
@@ -9,4 +10,4 @@ Filetypes = [
 IgnoredFiletypes = [
   'INFO.log'
 ]
-MinAge = 1
+MinAge = 0

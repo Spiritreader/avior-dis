@@ -30,6 +30,8 @@ pub struct Config {
     pub db_name: String,
     #[serde(default = "default_client_default")]
     pub default_client: String,
+    #[serde(default = "default_ignored_clients")]
+    pub ignored_clients: Vec<String>,
     #[serde(default = "default_filetypes")]
     pub filetypes: Vec<String>,
     #[serde(default = "default_ignored_filetypes")]
@@ -44,6 +46,7 @@ impl Default for Config {
             db_url: "mongodb://localhost:27017".to_string(),
             db_name: "DefaultDB".to_string(),
             default_client: gethostname().into_string().unwrap(),
+            ignored_clients: vec![],
             filetypes: vec!["ts".into(), "mpg".into()],
             ignored_filetypes: vec!["INFO.log".into()],
             min_age: 0,
@@ -69,6 +72,10 @@ fn db_name_default() -> String {
 
 fn default_client_default() -> String {
     Config::default().default_client
+}
+
+fn default_ignored_clients() -> Vec<String> {
+    Config::default().ignored_clients
 }
 
 pub fn read(cfg_path: &str) -> Result<Config, Box<dyn Error>> {
