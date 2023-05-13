@@ -98,6 +98,35 @@ impl<'yingking> DirectoryTraverser<'yingking> {
                     };
                     jobs.push(job);
                 }
+                else {
+                    println!("no suitable log file found for metadata, using file name instead");
+                    let stem = path.file_stem();
+                    let Some(stem_os_str) = stem else {
+                        println!("could not get file title for {}", path_to_str);
+                        continue;
+                    };
+                    let stem_str = stem_os_str.to_str();
+                    if let Some(stem_str) = stem_str {
+                        let mut name = stem_str.to_string();
+                        let mut subtitle = "".to_string();
+                        if let Some(index) = stem_str.find(" - ") {
+                            name = stem_str[..index].to_string();
+                            subtitle = stem_str[index + 3..].to_string();
+                        }
+                        let job = Job {
+                            id: None,
+                            name,
+                            subtitle,
+                            path: String::from(path_to_str),
+                            assigned_client: AssignedClient::default(),
+                            custom_parameters: Vec::new(),
+                        };
+                        jobs.push(job);
+                    }
+                    else {
+                        println!("could not get file title for {}", path_to_str);
+                    }
+                }
             }
         }
         Ok(jobs)

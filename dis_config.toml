@@ -1,7 +1,7 @@
 DbName = 'Avior'
 DbUrl = 'mongodb://192.168.178.75:27017'
-DefaultClient = 'VDR-U'
-IgnoredClients = []
+DefaultClient = 'PHOENIX'
+IgnoredClients = ['VDR-U', 'VDR-U-1', 'MMDG', 'VAVA', 'VDR']
 Filetypes = [
   'ts',
   'mpg',
